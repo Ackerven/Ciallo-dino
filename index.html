@@ -76,7 +76,11 @@
   }
 
   document.addEventListener("DOMContentLoaded", function() {
-    createCialloText(ciallo_slogan)
+    createCialloText(ciallo_slogan);
+
+    document.body.addEventListener("click", function(e) {
+      ciallo(e.pageX, e.pageY);
+    });
   });
 
   let is_start = 0;
@@ -98,8 +102,49 @@
         is_start = 1
       }
 
+      const mainContent = document.getElementById("main-content");
+      const rect = mainContent.getBoundingClientRect();
+      const y = rect.top + window.scrollY;
+      const x = 100;
+      ciallo(x, y + 100);
+
     }
   };
+
+  function randomColor() {
+    const r = Math.floor(Math.random() * 256).toString(16).padStart(2, "0");
+    const g = Math.floor(Math.random() * 256).toString(16).padStart(2, "0");
+    const b = Math.floor(Math.random() * 256).toString(16).padStart(2, "0");
+    return `#${r}${g}${b}`;
+  }
+
+  let idx = 0;
+  function ciallo(x, y) {
+    const ciallo_array = ["Ciallo～(∠・ω< )⌒★", "Ciallo～(∠・ω< )⌒☆"];
+    const span = document.createElement("span");
+    span.textContent = ciallo_array[idx];
+    idx = (idx + 1) % ciallo_array.length;
+
+    span.style.zIndex = "100";
+    span.style.top = (y - 20) + "px";
+    span.style.left = x + "px";
+    span.style.position = "absolute";
+    span.style.fontWeight = "bold";
+    span.style.color = randomColor();
+    span.style.transition = "all 2.5s ease";
+
+    document.body.appendChild(span);
+
+    requestAnimationFrame(() => {
+      span.style.top = (y - 180) + "px";
+      span.style.opacity = "0";
+    });
+
+    setTimeout(() => {
+      span.remove();
+    }, 2500);
+  }
+
 </script>
 
 </html>
