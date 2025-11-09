@@ -8,11 +8,38 @@
     <link rel="stylesheet" href="index.css">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet"> 
     <script src="index.js"></script>
+    <style>
+      .shake-text {
+        font-size: 32px;
+        display: inline-block;
+      }
+
+      .shake-text span {
+        display: inline-block;
+        animation: shake 0.5s infinite, colorChange 2s infinite;
+      }
+
+      @keyframes shake {
+        0% { transform: translate(0, 0); }
+        25% { transform: translate(-1px, -1px); }
+        50% { transform: translate(1px, 1px); }
+        75% { transform: translate(-1px, 1px); }
+        100% { transform: translate(1px, -1px); }
+      }
+
+      @keyframes colorChange {
+        0% { color: red; }
+        25% { color: blue; }
+        50% { color: green; }
+        75% { color: orange; }
+        100% { color: purple; }
+      }
+  </style>
 </head>
 
 <body id="t" class="offline">
     <div id="messageBox" class="sendmessage">
-         <h1 style="text-align: center;font-family: 'Open Sans', sans-serif;">Press Space to start</h1>
+         <h1 id="message" style="text-align: center;font-family: 'Open Sans', sans-serif;">Press Space to <span id="ciallo-text" class="shake-text">Ciallo～(∠・ω&lt;)⌒★</span></h1>
          <div class="niokbutton" onclick="okbuttonsend()"></div>
     </div>
     <div id="main-frame-error" class="interstitial-wrapper">
@@ -32,13 +59,47 @@
 </body>
 
 <script>
-    document.onkeydown = function(evt) {
+
+  const ciallo_slogan = "Ciallo～(∠・ω<)⌒★"
+  const ciallo_active = "Cialloing  softly～(｡･ω･｡)ﾉ♡";
+
+  const createCialloText = function(text) {
+    let ciallo = document.getElementById("ciallo-text");
+    ciallo.textContent = "";
+
+    text.split("").forEach(char => {
+      const span = document.createElement("span");
+      span.innerHTML = char === " " ? "&nbsp;" : char;
+      span.style.animationDelay = `${Math.random() * 0.5}s`;
+      ciallo.appendChild(span);
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", function() {
+    createCialloText(ciallo_slogan)
+  });
+
+  let is_start = 0;
+  document.onkeydown = function(evt) {
     evt = evt || window.event;
     if (evt.keyCode == 32) {
-        var box = document.getElementById("messageBox");
-        box.style.visibility="hidden";
+
+      if (!is_start) {
+        // var box = document.getElementById("messageBox");
+        // box.style.visibility="hidden";
+        const ciallo = document.getElementById("ciallo-text");
+        // createCialloText(ciallo.textContent + "  cialloing  softly～(｡･ω･｡)ﾉ♡");
+        createCialloText(ciallo_active);
+
+        const msg = document.getElementById("message");
+        msg.innerText = ""
+        msg.appendChild(ciallo);
+
+        is_start = 1
+      }
+
     }
-};
+  };
 </script>
-    
+
 </html>
