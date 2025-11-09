@@ -34,6 +34,21 @@
         75% { color: orange; }
         100% { color: purple; }
       }
+
+      .footer {
+        position: fixed;
+        bottom: 0;
+        padding-bottom: env(safe-area-inset-bottom);
+        left: 50%;
+        transform: translateX(-50%);
+        text-align: center;
+        width: 90%;
+      }
+
+      .footer-text {
+        margin: 0.5em;
+        font-size: 0.75em;
+      }
   </style>
 </head>
 
@@ -56,6 +71,14 @@
             </template>
         </div>
     </div>
+    <footer class="footer">
+      <p class="footer-text">
+        Copyright &copy; <span id="copyright-year">2025</span>
+        <a target="_blank" rel="noopener noreferrer" href="https://ackerven.com">Ackerven</a>.
+        All rights reserved.
+        <a target="_blank" rel="noopener noreferrer" href="https://github.com/Ackerven/Ciallo-dino">View on GitHub</a>
+      </p>
+    </footer>
 </body>
 
 <script>
@@ -73,6 +96,23 @@
       span.style.animationDelay = `${Math.random() * 0.5}s`;
       ciallo.appendChild(span);
     });
+  }
+
+  const clacCopyrightYear = function() {
+    const defaultYear = 2025;
+    const currentYear = new Date().getFullYear();
+
+    let result = "";
+    if (currentYear < defaultYear) {
+      result = `${currentYear}-${defaultYear}`;
+    } else if (currentYear === defaultYear) {
+      result = `${defaultYear}`;
+    } else {
+      result = `${defaultYear}-${currentYear}`;
+    }
+
+    const copyrightYear = document.getElementById("copyright-year");
+    copyrightYear.textContent = result;
   }
 
   document.addEventListener("DOMContentLoaded", function() {
